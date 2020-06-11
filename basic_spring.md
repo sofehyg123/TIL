@@ -14,7 +14,7 @@
 spring-petclinic 프로젝트 사용 방법에는,  
 Running petclinic locally 란에 보면 잘 나와있음.
 
- IntelliJ 사용해서 git clone을 함 => IntelliJ 초기 화면에   Get from Version Control > Version control : Git으로 설정 ->URL 에 해당 프로젝트 clone하여 넣어준다. 그리고 확인. 만약 폴더가 이미 존재하면 터미널로 해당 디렉토리 삭제할 것 ( rm -rf 프로젝트이름)
+ IntelliJ 사용해서 git clone을 함 => IntelliJ 초기 화면에    Get from Version Control > Version control : Git으로 설정 ->URL 에 해당 프로젝트 clone하여 넣어준다. 그리고 확인. 만약 폴더가 이미 존재하면 터미널로 해당 디렉토리 삭제할 것 ( rm -rf 프로젝트이름)
 
  ./mvnw pakage
 로컬에 메이븐을 설치하지 않았더라도 사용할 수 있도록 함.
