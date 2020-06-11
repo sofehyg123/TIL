@@ -10,7 +10,7 @@
 
 학습포인트
 
-#프로젝트 설정
+#프로젝트-설정    
 spring-petclinic 프로젝트 사용 방법에는,
 Running petclinic locally 란에 보면 잘 나와있음.
 
