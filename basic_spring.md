@@ -11,7 +11,7 @@
     
 
 ## 프로젝트 설정    
-실행 방법은 해당 프로젝트 설명란(Running petclinic locaaly)애서 확인하 수 있음.    
+실행 방법은 해당 프로젝트 설명란(Running petclinic locally)애서 확인하 수 있음.    
 
 ```
 git clone https://github.com/spring-projects/spring-petclinic.git  //1
@@ -24,13 +24,13 @@ java -jar target/*.jar                                             //3
 (IntelliJ 초기화면 > Get from Version Control > Version control : Git으로 설정 > 해당 URL clone)  
   
 **해당 경로에 이미 같은 프로젝트 이름을 가진 폴더가 존재한다면 삭제,**  
->터미널창 : (해당프로젝트폴더가 있느 경로)rm -rf 프로젝트 이름  
+>터미널창 : (해당 프로젝트폴더가 있는 경로)rm -rf 프로젝트 이름  
   
   
 * 2  
  ./mvnw package : 로컬에 메이븐을 설치하지 않았더라도 사용할 수 있도록 함.  
                   maven에 패키징 빌드를 실행하면, 이 프로젝트를 빌드해서 패키징 파일을 만듬.
->(갑툭튀)강의에서 백기선님이 오타내서 오류가 났는데, 이 떄 오류메세지를 항상 읽는 습관
+>(갑툭튀)강의에서 백기선님이 오타내서 오류가 났는데, 이 떄 오류메세지를 항상 읽는 습관.
 > jar 패키지 확인 방법: target > pom.xml 에 packaging 태그가 없으면 기본적으로 jar파일임.
 >./mvnw package 실행 해보면,  
 >Building jar: /Users/yunhyeoggi/workspace/spring-petclinic/target/spring-petclinic-2.3.0.BUILD-SNAPSHOT.jar
@@ -69,5 +69,3 @@ HikariPool-1 - Shutdown initiated...
 ```
 * 서버포트 변경  
 java --server.port=하고싶은 포트번호  
-
-
