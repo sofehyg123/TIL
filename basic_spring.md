@@ -21,8 +21,8 @@ java -jar target/*.jar                                             //3
 ```
 * 1  
 인텔리J라는 편집도구를 통해 git clone 받음.  
-(IntelliJ 초기화면 > Get from Version Control > Version control : Git으로 설정 > 해당 URL clone)
-**해당 경로에 이미 같은 프로젝트 이름을 가진 폴더가 존재한다면 삭제, **  
+(IntelliJ 초기화면 > Get from Version Control > Version control : Git으로 설정 > 해당 URL clone)  
+**해당 경로에 이미 같은 프로젝트 이름을 가진 폴더가 존재한다면 삭제,**  
 터미널창 : (해당프로젝트폴더가 있느 경로)rm -rf 프로젝트 이름  
   
   
