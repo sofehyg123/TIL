@@ -133,7 +133,7 @@ html이 스프링 부트에서만 이렇게 위치하는 건지 아무데나 위
 + 정확히 일치하는 것이 아니라 해당 키워드가 들어 있는 걸 찾아볼까? 
 ```
 @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.firstName 
-        LIKE %:firstName")
+        LIKE %:firstName%")
 // :firstName => 콜론까지 포함해서 키워드로 바뀌는 것이므로 콜론 앞에다가 % 해야 함.
 ```
 + Owner 에 age 추가  
