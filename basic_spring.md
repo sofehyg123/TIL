@@ -4,7 +4,7 @@
 ## 목차
 ---
 1. [프로젝트 설정](#프로젝트-설정)  
-
+2. [프로젝트 살펴보기](#프로젝트-살펴보기)
 ***
     
     
@@ -74,4 +74,39 @@ java --server.port=하고싶은 포트번호
 * [목차로 돌아가기](#목차)  
   
 ***
+  
+  
+## 프로젝트 살펴보기  
+  
+1. Debug 로그레벨 주석 풀기.    
+>src > main > resources > application.properties > #loging 부분 > Debug 주석문 풀기.  
+프로그램 실행 시 새로고침 등 요청에 찍히는 로그를 확인하기 위함임.  
+INFO 레벨은 로그인, 상태변경과 같은 정보성 메세지를 나타냄.  
+  
+  
+2. DispatcherServlet(GET/POST)  
+**GET**  요청에 따른 해당 URL을 DistpatcherServlet 이 맵핑된 메서드와 연결해줌.  
+**POST** 입력된 데이터를 파라미터 값으로 서버에 전달.(응답정보,POST방식).
+```
+POST>
+2020-06-13 16:28:15.905 DEBUG 1046 --- [nio-8080-exec-7] o.s.web.servlet.DispatcherServlet: 
+                                                     POST "/owners/new" parameters={masked}s
+```
+  
+3. resources > templates > owners > ...html  
+html 파일들은 resources 디렉토리 하에 templates 하에 위치해 있다는 것을 기억했다.  
+html이 스프링 부트에서만 이렇게 위치하는 건지 아무데나 위치해도 상관이 없는지 모름. 찾아보기. 
+  
+  
+4. 디버그 실행
+해당 line 왼쪽에 점을 찍으면 오류, 흐름을 찾는데 유용.
+다음단계는 F8,다음 커서는 F9 
 
+내가 한 번 풀어보기 과제
+
+
+
+
+
+* [목차로 돌아가기](#목차)
+***
