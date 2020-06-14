@@ -5,6 +5,7 @@
 ---
 1. [프로젝트 설정](#프로젝트-설정)  
 2. [프로젝트 살펴보기](#프로젝트-살펴보기)
+3. [스프링 Ioc](#스프링-Ioc)
 ***
     
     
@@ -143,4 +144,45 @@ html이 스프링 부트에서만 이렇게 위치하는 건지 아무데나 위
     > db는 resources 밑에 있음.  
   
 * [목차로 돌아가기](#목차)
-***
+***  
+  
+  
+## 스프링 Ioc  
+  
+1. Inversion of control : 제어의 역전  
+    + 직접 new 하여 객체르 생성해서 직접 관리하는 것이 일반적인 의존성.
+    + 그러나, 외부에서 의존성을 받아 본 클래스에 주입시키는 것, 다시 말해 외부에서 제어권을 가지고 의존성을 넘겨 받는 이 자체를 제어의 역전이라 함.
+    + 의존성을 넘겨받을 때 밑에 코드 처럼 주입 시키는 형태를 DI(Dependency Injection) 이라고 함.
+```  
+//===============IoC=================
+class OwnerController {
+    private final OwnerRepository owners;
+                            //Dependency Injection.
+    public OwnerController(OwnerRepository owners){
+        this.owners = owners;
+    }
+//===============IoC=================
+```  
+
+    +spring-petclinic 예제  
+```
+class OwnerController {
+	public OwnerController(OwnerRepository clinicService, VisitRepository visits) {
+		this.owners = clinicService;
+		this.visits = visits;
+	}
+}
+```
+    + 내생각임.  
+    + 결론부터 말하자면 위 생성자는 Repository가 생성되서 의존성을 받도록 설계되어 있음.  
+    + 생성자가 1개 이기 때문에 OwnerController 클래스를 사용하기 위해서는 결국, OwnerRepository에 의존성 객체를 주입시킬 수 밖에 없다.  
+    + 생성자가 1개 이기 때문에? 이게 무슨 말이지? 자바의 정석에서 배웠다.  
+    + 클래스에서 생성자를 만들지 않는 경우에는 컴파일러에서 컴파일 과정 중 기본 생성자를 만들어 준다. 
+    + 그렇지만 사용자가 인자가 있는 생성자를 만들 때, 컴파일러에서는 자동적으로 기본 생성자를 만들어 주지 않는다.  
+    + 외부에서 클래스를 호출 할 때 new 연산자를 사용하여 생성자를 호출한다. 결국 그 객체를 사용하기 위해서 repository 객체 주입?  
+    + 분명 이 클래스 자체에서는 repository 값이 null 일 듯. 하지만 외부에서 주입받을 수 있도록 설계 되어 있기 때문에 exception은 발생하지 않을 것이다.  
+    + 그걸 편리하게 설계할 수 있는 기능을 spring이 제공해준다? 
+
+    
+* [목차로 돌아가기](#목차)  
+***  
