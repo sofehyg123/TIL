@@ -188,7 +188,8 @@ class OwnerController {
 * [목차로 돌아가기](#목차)  
 ***  
 
-## Ioc 컨테이너(ApplicationContext에 대해서 자바 api 문서 확인 > 구조 대강 파악하기)
+## Ioc 컨테이너
+* :(ApplicationContext에 대해서 자바 api 문서 확인 > 구조 대강 파악하기)
 
 * 스프링이 제공하는 Ioc 컨테이너 코드 : ApplicationContext(BeanFactory)  
 * 핵심적인 클래스이지만 소스코드에서 직접 사용할 일이 없는 코드이기도 함.
