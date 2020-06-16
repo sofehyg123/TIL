@@ -8,6 +8,7 @@
 3. [스프링 Ioc](#스프링-Ioc)  
 4. [Ioc 컨테이너](#Ioc-컨테이너)  
 5. [Spring Bean](#spring-bean)  
+6. [의존성 주입](#dependency-Injection)
 ***
     
     
@@ -222,14 +223,77 @@ class OwnerController {
   
   
 * bean
-  1.Ioc 컨테이너가 관리하는 객체
-  2.
+  - Ioc 컨테이너가 관리하는 객체  
 ```
 OwnerController owner = new OwnerController(); -> bean이 아님
 OwnerController bean = applicationContext.getBean(OwnerController.class); -> applicationContext에서 
 가져다 쓰고 있기 때문에 bean이 맞음. 즉, applicationContext가 담고 있는 객체에만 의존성주입이 가능.
 ```
+  
+  - 빈을 등록하는 방법  
+     1. Component Scannig  
+     	+ @Component(메타 애노테이션)
+	  - @Repository   
+	  - @Service  
+	  - @Comtroller  
+	  - @Configuration
+     2. xml, 자바설정 파일에 직접 등록  
+  - 애노테이션 프로세스 중이 스프링 Ioc 컨테이너가 빈을 등록할 때 사용하는 인터페이스들을 라이프 사이클 콜백이라고 부름.  
+  - 여러가지 라이프 사이클 콜백 중에는 이런 @Component 가 붙어있는 클래스를 찾아서 인터페이스들을 만들어 Bean으로 등록하는,  
+  - 애노테이션 프로세서(애노테이션 처리기)가 등록되어 있음.  
+  - @Component Scanning(애노테이션 프로세서?처리기?) 이 위치한 파일부터 하위 모든 디렉터리의 @Component 달린 클래스를 찾아서 Bean으로 등록하는 역할. 
+  - 따라서 만든 클래스에 @Component 애노테이션을 붙여주면 직접 Bean을 등록하지 않아도 스프링이 Ioc컨테이너가 만들어질 때 알아서 Bean으로 등록해줌.  
+  - Repository는 스프링 데이터 JPA가 제공해주는 기능에 의해서 Bean으로 등록.  
+  - 이 경우는특별한 애노테이션이 없더라도 이 인터페이스를 상속 받는 클래스를 찾아서 클래스 안에 인터페이스 구현체를 내부적으로 만들어서 Bean으로 등록되는 과정임.  
+  - 백기선님 강좌의 스프링데이터JPA 강좌에 설명하고 있다고 함. 들어야지.
+    
+    
+```
+@Configuration
+public class SampleConfig{
+
+	@Bean
+	public SampleController sampleController(){
+		return new SampleController();
+	} //Bean 을 직접 정의
+	  //SampleController() 객체를 리턴하는 메서드 자체가 Bean으로 등록이 됨.
+	  //그러면 SampleController 클래스 위에 @Controller 애노테이션을 붙일 필요가 없게 되는 거임.
+	  //위의 Bean 설정 파일을 사용했기 때문에...
+	  //Configuration도 Component 이기 때문에 Component Scan이 됨.
+	
+```
+  - @Autowired 애노테이션을 사용하면 Ioc 컨테이너에 있는 Bean을 꺼내서 사용할 수 있음.
+  
 
 
 * [목차로 돌아가기](#목차)  
 ***  
+
+## dependency-Injection
+  
+* @Autowired 애노테이션 사용 후 메이븐 패키지 빌드 하면 Build False 되면서 실행이 중지된다.  
+* (default) on project spring-petclinic: Formatting violations found in the following files  
+* 스프링 문법 규칙에 맞는 문법으로 수정하라는 오류메세지인데, 빈 객체에서는 생성자를 통해 빈 객체를 주입받는 문법만 허용해서 발생하는 오류라고 한다.  
+* 해결방법은 1.,/mvnw spring-javaformat:apply 해서 설정한 후 다시 ./mvnw package 빌드 실행하면 성공. 아니면,  
+* git stash > git log - : 이게 무슨 의미인지 찾아봐야 겠다.  
+* git stash : 하던 작업 임시로 저장하기.  
+* git log - : 저장소의 commit history를 시간 순으로 보여준다.  
+* 스프링 4.3 이후부터는 클래스에 생성자가 한개이고 그 생성자로 주입받는 reference 변수들이 Bean으로 등록되어 있다면 그 Bean을 자동으로 등록.  
+* 할 수 있도록 스프링 프레임 워크에 추가됨, 그래서 생성자에 붙는 Autowired 애노테이션을 생략할 수 있음.   
+   
+* (티끌지식)테스트가 잘 동작한다는 의미는 빌드가 잘 동작이 된다는 거고 이 말은 이 코드가 재대로 동작한다는 의미.  
+* setter 에 @Autowired 붙여도 됨. 이 방법 역시 Ioc컨테이너 안에 해당 타입의 Bean을 찾아서 넣어주는 것임.  
+
+* (정리)Di 주입 방법 세 가지
+	1. 필드 = OwnerController 의 @Autowired.
+	2. 생성자 = OwnerController(OwnerRepository repository ... ) 의 @Autowired.
+	3. setter = public void setOwner(){} 의 @Autowired.  
+* 이 중에서 스프링 레퍼런스에서 권장하는 방법은 생성자.  
+* 그 이유는 필수적으로 사용해야 하는 레퍼런스 없이는 이 인스턴스를 만들지 못하도록 강제할 수 있기 때문에 생성자가 좋은 선택일 수 있음.  
+* 1번 2번은 의존성 없이도 클래스를 만들 수 있음.  
+* 근데 1번 2번 같은 경우 순환참조시에 장점이 될 수 있음. 셍성자 같은 경우 못만듬. 순한참조 A가 B를 참조 B가 A를 참조.  
+* 셀프 과제 : 의존성 주입시 해당 변수에 final을 붙이는 이유를 알아보자. final 개념 찾기(자바의정석), 그리고 영상 다시 시청.
+* setter을 쓸 때에는 변수에 final을 쓰면 안됨. final의 개념을 다시 되새기기.
+
+
+
