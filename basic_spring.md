@@ -7,6 +7,7 @@
 2. [프로젝트 살펴보기](#프로젝트-살펴보기)  
 3. [스프링 Ioc](#스프링-Ioc)  
 4. [Ioc 컨테이너](#Ioc-컨테이너)  
+5. [Spring Bean](#spring-bean)  
 ***
     
     
@@ -215,5 +216,20 @@ class OwnerController {
   
   
   
+* [목차로 돌아가기](#목차)  
+***  
+## spring bean  
+  
+  
+* bean
+  1.Ioc 컨테이너가 관리하는 객체
+  2.
+```
+OwnerController owner = new OwnerController(); -> bean이 아님
+OwnerController bean = applicationContext.getBean(OwnerController.class); -> applicationContext에서 
+가져다 쓰고 있기 때문에 bean이 맞음. 즉, applicationContext가 담고 있는 객체에만 의존성주입이 가능.
+```
+
+
 * [목차로 돌아가기](#목차)  
 ***  
