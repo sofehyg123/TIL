@@ -290,10 +290,15 @@ public class SampleConfig{
 	3. setter = public void setOwner(){} 의 @Autowired.  
 * 이 중에서 스프링 레퍼런스에서 권장하는 방법은 생성자.  
 * 그 이유는 필수적으로 사용해야 하는 레퍼런스 없이는 이 인스턴스를 만들지 못하도록 강제할 수 있기 때문에 생성자가 좋은 선택일 수 있음.  
-* 1번 2번은 의존성 없이도 클래스를 만들 수 있음.  
-* 근데 1번 2번 같은 경우 순환참조시에 장점이 될 수 있음. 셍성자 같은 경우 못만듬. 순한참조 A가 B를 참조 B가 A를 참조.  
-* 셀프 과제 : 의존성 주입시 해당 변수에 final을 붙이는 이유를 알아보자. final 개념 찾기(자바의정석), 그리고 영상 다시 시청.
-* setter을 쓸 때에는 변수에 final을 쓰면 안됨. final의 개념을 다시 되새기기.
+* 1번 2번은 의존성 없이도 클래스를 만들 수 있음.    
+* 근데 1번 2번 같은 경우 순환참조시에 장점이 될 수 있음. 셍성자 같은 경우 못만듬. 순한참조 A가 B를 참조 B가 A를 참조.   
+* 셀프 과제 : 의존성 주입시 해당 변수에 final을 붙이는 이유를 알아보자. final 개념 찾기(자바의정석), 그리고 영상 다시 시청.  
+* setter을 쓸 때에는 변수에 final을 쓰면 안됨. final의 개념을 다시 되새기기.  
+  
+* final :  
+> just like any getters and setters but you'll have to call your setter from constructor which would be pointless as you can initialize your final in the costructor by simple assignment 
+>Getter method is like for any other field. Being final means it cannot be changed, so you can't do a setter method.
 
-
+* field Injection 할 때에는 final 을 붙이면 안된다. final은 값을 변경하지 않도로 강제해주는 접근제어자임.
+* 생성자를 만들 변수에 final을 붙여주는 이유는 다른 레퍼런스가 들어오지 않도록 강제해주는 역활이 하기 위해서이다. 저장 
 
