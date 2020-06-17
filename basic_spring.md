@@ -9,6 +9,7 @@
 4. [Ioc 컨테이너](#Ioc-컨테이너)  
 5. [Spring Bean](#spring-bean)  
 6. [의존성 주입](#dependency-Injection)
+7. [AOP](#AOP)
 ***
     
     
@@ -294,11 +295,26 @@ public class SampleConfig{
 * 근데 1번 2번 같은 경우 순환참조시에 장점이 될 수 있음. 셍성자 같은 경우 못만듬. 순한참조 A가 B를 참조 B가 A를 참조.   
 * 셀프 과제 : 의존성 주입시 해당 변수에 final을 붙이는 이유를 알아보자. final 개념 찾기(자바의정석), 그리고 영상 다시 시청.  
 * setter을 쓸 때에는 변수에 final을 쓰면 안됨. final의 개념을 다시 되새기기.  
-  
+    
 * final :  
-> just like any getters and setters but you'll have to call your setter from constructor which would be pointless as you can initialize your final in the costructor by simple assignment 
->Getter method is like for any other field. Being final means it cannot be changed, so you can't do a setter method.
+> just like any getters and setters but you'll have to call your setter from constructor which would be pointless as you can initialize your final in the costructor by simple assignment   
+>Getter method is like for any other field. Being final means it cannot be changed, so you can't do a setter method.  
+  
+* field Injection 할 때에는 final 을 붙이면 안된다. final은 값을 변경하지 않도로 강제해주는 접근제어자임.  
+* 생성자를 만들 변수에 final을 붙여주는 이유는 다른 레퍼런스가 들어오지 않도록 강제해주는 역활이 하기 위해서이다.  
 
-* field Injection 할 때에는 final 을 붙이면 안된다. final은 값을 변경하지 않도로 강제해주는 접근제어자임.
-* 생성자를 만들 변수에 final을 붙여주는 이유는 다른 레퍼런스가 들어오지 않도록 강제해주는 역활이 하기 위해서이다. 저장 
 
+* [목차로 돌아가기](#목차)  
+***  
+
+## AOP  
+  
+  
+  * 흩어지 코드를 모으는 것 : AOP
+  * 구현 방법:
+  	1. 컴파일(AspectJ) : 코드에는 안보이지만 컴파일할 때 넣어주는 기능.
+	2. 바이트코드 조작 : A.java -> A.class을 클래스 로더가 읽어올 때(메모리에 올릴때) 조작.(AspectJ 에서 제공)
+	3. 프록시 패턴
+
+* [목차로 돌아가기](#목차)  
+***  
