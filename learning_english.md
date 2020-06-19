@@ -51,7 +51,7 @@ The following Maven example shows how to exclude Tomcat and include Jetty for Sp
 1. 문장 구조 파악. => 부사라서 intead 위치를 마지막에 둘 수 있구나. 이런 표현 방식이 부담스럽지 않은 건가? 자연스러운 표현방식인건가? 메모.
 2. When 다음에 동사가 오네? 뒤에 목적어 전치사로 to가 올 수 있구나. need 다음에도 to가 많이 오네? to는 목적을 얘기할 때 많이 쓰는 전치사인가?
 3. separate 형용사로 쓰임. 
-4. to help와 한 묶음, 그래서 뒤에 동사인 make를 쓸 수 있는건가?
+4. to help와 한 묶음, 그래서 뒤에 동사인 make를 쓸 수 있는건가?  
 <단어 정리>  
-  -For : ~겅우, ~에서 이런 식으로 의역.
+  -For : ~겅우, ~에서 이런 식으로 의역.  
   
