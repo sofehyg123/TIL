@@ -275,6 +275,21 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
         - application.properties 에 server.http2.enabled=ture 을 추가해주면 되는데 웹 서버마다 제약사항이 다르니 공홈 확인.  
         - undertow 웹서버 사용하면 별다른 설정이 필요없음.  
         - 그리고 HTTP에 SSL이 기본적으로 적용되어 있어야 함.  
-           
-    
+    + undertow 말고 tomcat서버로 HTTP/2 를 동작하기 위한 방법. pom.xml에 의존성 추가    
+        - pom.xml의 properties 영역에 java와 tomcat 버전을 명시해서 변경해준다.
+        - 자바9를 설치한다.
+        - project structure에서 프로젝트 자바 버전을 9로 변경하고 module의 dependencies 에도 자바 9로 변경해준다.
+        - 
+    ```  
+    <pom.xml>
+       <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>9</java.version>
+        <tomcat.version>9.0.36</tomcat.version>
+    </properties>
+    ```  
+  
+  
+     
 ***
