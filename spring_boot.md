@@ -297,6 +297,7 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
 
 # 독립적으로 실행 가능한 JAR 파일  
 
+* maven 프로젝트를 다른 곳에서 쓸 때 배포할 프로젝트를 jar파일로 packaging 해서 받는 곳에서 jar파일을 사용하는 것이 유용함.
 * mvn clean : target 밑에 있는 걸 전부 삭제 하는 기능  
 
 ***
