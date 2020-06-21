@@ -426,18 +426,18 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
     + 순서 지정 가능 @Order
         - Runner가 여러개 일 경우 순서를 주는 것임. 우선순위는 숫자가 작은게 큰것임.
     
-    ``` 
-    //<ApplicationRunner>
-    //springboot Application이 뜬 이후에 추가적으로 실행하고 싶을때 쓰는 거라는데 log기록을 보면 Applciation 다음에 실행되서 뜸.
-    @Component
-    public class SampleListener  implements ApplicationRunner {
+        ``` 
+        //<ApplicationRunner>
+        //springboot Application이 뜬 이후에 추가적으로 실행하고 싶을때 쓰는 거라는데 log기록을 보면 Applciation 다음에 실행되서 뜸.
+        @Component
+        public class SampleListener  implements ApplicationRunner {
 
-        @Override
-        public void run(ApplicationArguments args) throws Exception {
-            System.out.println("foo:" + args.containsOption("foo"));
-            System.out.println("bar:" + args.containsOption("bar"));
+            @Override
+            public void run(ApplicationArguments args) throws Exception {
+                System.out.println("foo:" + args.containsOption("foo"));
+                System.out.println("bar:" + args.containsOption("bar"));
+            }
         }
-    }
-    ``` 
+        ``` 
 
 ***
