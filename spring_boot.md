@@ -1,13 +1,16 @@
 # Spring_boot
 
-# 목차
----------
+* [출처:백기선님의 inflearn 강좌](https://www.inflearn.com/course/스프링부트/dashboard)  
+---
+# 목차  
+  
 0. [자동설정 이해](자동설정-이해)
 1. [자동설정 만들기](#자동설정-만들기)  
 2. [내장 웹서버의 이해](#내장-웹서버의-이해)  
 3. [내장 웹서버의 응용1](#내장-웹서버의-응용1)  
 4. [내장 웹서버의 응용2](#내장-웹서버의-응용2)  
-5. [독립적으로 실행 가능한 JAR 파일](#독립적으로-실행-가능한-JAR-파일)
+5. [독립적으로 실행 가능한 JAR 파일](#독립적으로-실행-가능한-JAR-파일)  
+6. [spring application](#spring-application)
   
 ***  
   
@@ -296,8 +299,145 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
 ***
 
 # 독립적으로 실행 가능한 JAR 파일  
-
-* maven 프로젝트를 다른 곳에서 쓸 때 배포할 프로젝트를 jar파일로 packaging 해서 받는 곳에서 jar파일을 사용하는 것이 유용함.
+  
+* maven 프로젝트를 다른 곳에서 쓸 때 배포할 프로젝트를 jar파일로 packaging 해서 받는 곳에서 jar파일을 사용하는 것이 유용함.  
 * mvn clean : target 밑에 있는 걸 전부 삭제 하는 기능  
+* mvn package : jar 파일 생성하는데 이 안에 external libraries 이 전부 들어가 있기 때문에 의존성도 포함된다.  
+* 문제 : 옛날에는 jar파일을 읽어들일 수 있는 자바의 표준적인 방법이 없었기 때문에 uber 라는 jar을 사용함.  
+* 스프링부트에서는 의존성에 해당하는 jar파일들을 묶어서 jarFile이라는 로더를 통해서 읽어들일 수 있음.  
+***
+# spring application  
+  
+* log
+    + DEBUG로 변경
+      - Run/Debug Configurations 의 VM 에 -Ddebug 입력하고 apply  
+      - 이 모드는 어떠한 자동설정이 적용 됬는지/안됬는지에 대한 문구를 확인할 수 있음  
+    + Failure  
+      - 오류메세지를 이쁘게 하는 방법  
+    + banner  
+      - resources > banner.txt > 원하는 내용  
+      - 실행하면 내가 설정한대로 출력됨.  
+      - resources 말고 다른 위치에 banner File을 위치시키는 방법  
+          - application.properties
+            ex) spring.banner.location = classpath:banner.txt 이런식으로..  
+      - txt 말고 jpg/png/gif 로 banner를 구현할 수 있다.  
+      - banner을 off 하고 싶다. 아래 코드처럼 작성하면 됨.  
+      ```  
+      @SpringBootApplication
+      public class Application {
+      public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(Application.class);
+        app.setBannerMode(Banner.Mode.OFF); //add
+        app.run(args);
+        }
+      }
+      ```  
+      - 코드로 Banner을 커스터마이징 할 수도 있다.
+      - 만약 banner 모드 off하면 당연히 배너가 뜨지 않기 때문에 주석처리해야 함.
+      - resources > banner.txt가 있으면 코드로 작성된 banner 메서드에 덮어씌여져 우선시되어 출력된다.
+      ```  
+      @SpringBootApplication
+      public class Application {
+        public static void main(String[] args) {
+          SpringApplication app = new SpringApplication(Application.class);
+          app.setBanner(new Banner() {
+              @Override
+              public void printBanner(Environment environment, Class<?> sourceClass, PrintStream out) {
+                  out.println("=================");
+                  out.println("hyeokki spring!!!");
+                  out.println("=================");
+
+              }
+          });
+          //app.setBannerMode(Banner.Mode.OFF);
+          app.run(args);
+        }
+      }
+
+      ```  
+      - SpringApplicationBulder를 사용해 run을 하는 방법도 있음. 이는 커스터마이징 불가능.
+      ```  
+      @SpringBootApplication
+      public class Application {
+          public static void main(String[] args) {
+              new SpringApplicationBuilder().sources(Application.class).run(args);
+          }
+      }
+      ```  
+    + Events  
+        - ApplicationContext가 만들어지고 난 후 동작하는 Event와 그렇지 않은 Event가 있다.  
+        - 전자의 Event경우에는 @Bean으로 등록된 Listener을 동작시키지만 후자는 그렇지 않다. 아래를 보자.  
+        - Listener  
+            1. ApplicationStartingEvent 구현한 Listener 클래스  
+                이 Event는 Application이 동작하고 처음시점에 발생되는 Event이므로 @Bean으로 등록한다고 하더라도 동작하지 않는다.  
+        ```  
+        //<예제코드>
+        @Component
+        public class SampleListener implements ApplicationListener<ApplicationStartingEvent> {
+
+            @Override
+            public void onApplicationEvent(ApplicationStartingEvent applicationStartingEvent) {
+                System.out.println("====================");
+                System.out.println("ApplicationEvent!!");
+                System.out.println("====================");
+            }
+        }
+        ```  
+        - 이 리스너를 동작시키려면 직접 리스너를 생성해서 동작시켜야 한다.  
+        ```  
+        @SpringBootApplication
+        public class Application {
+            public static void main(String[] args) {
+                SpringApplication app = new SpringApplication(Application.class);
+                app.addListeners(new SampleListener());
+                app.run(args);
+            }
+        }
+        ```  
+        - ApplicationStartingEvent 말고 ApplicationStartedEvent 를 @Bean으로 등록했을 떄에는 직접 등록하지 않고 실행해도 잘 동작한다.  
+          맨 마지막에 뜸.  
+    + Application의 WebApplicationType을 설정
+        - 3가지 타입이 있음 : Servlet, Reactive, none
+        - Servlet MVC가 있으면 WebFlux가 있어도 1순위로 Servlet이 동작되고 Reactive가 2순위가 된다.  
+        - 아무것도 없으면 none이 동작한다.  
+        - 이는 자동으로 그렇게 동작된다는 거고, 원하는 WebApplicationType이 있다면 직접 코드로 작성해주면 된다.  
+        ```  
+        @SpringBootApplication
+        public class Application {
+            public static void main(String[] args) {
+                SpringApplication app = new SpringApplication(Application.class);
+                app.setWebApplicationType(WebApplicationType.REACTIVE);
+                app.run(args);
+            }
+        }
+        ```  
+    + Application Arguments 사용하기
+        - <Run configuration에서>  
+        - Vm Option : -Dfoo  
+        - Programing arguments : --bar  
+        - 이렇게 해서 동작해보면 --bar만 true가 뜬다.  
+        - 둘 다 console로 들어오지만, -D옵션은 VM Option에서 쓰는 것으로 치고 --로 쓰는 것만 arguments로 들어온다.  
+        - 그럼 console에서는 어떨까?  
+        - console에도 역시 마찬가지다. VM OPtion은 Application arguments가 아님. 
+        
+    + 애플리케이션 실행한 뒤 뭔가 실행하고 싶을 때
+    + ApplicationRunner (추천) 또는 CommandLineRunner
+        - 둘 다 JVM Option을 받지 못하고 -- 찍힌 bar만 출력됨.
+    + 순서 지정 가능 @Order
+        - Runner가 여러개 일 경우 순서를 주는 것임. 우선순위는 숫자가 작은게 큰것임.
+    
+    ``` 
+    //<ApplicationRunner>
+    //springboot Application이 뜬 이후에 추가적으로 실행하고 싶을때 쓰는 거라는데 log기록을 보면 Applciation 다음에 실행되서 뜸.
+    @Component
+    public class SampleListener  implements ApplicationRunner {
+
+        @Override
+        public void run(ApplicationArguments args) throws Exception {
+            System.out.println("foo:" + args.containsOption("foo"));
+            System.out.println("bar:" + args.containsOption("bar"));
+        }
+    }
+    ``` 
 
 ***
