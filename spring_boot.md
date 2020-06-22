@@ -10,7 +10,8 @@
 3. [내장 웹서버의 응용1](#내장-웹서버의-응용1)  
 4. [내장 웹서버의 응용2](#내장-웹서버의-응용2)  
 5. [독립적으로 실행 가능한 JAR 파일](#독립적으로-실행-가능한-JAR-파일)  
-6. [spring application](#spring-application)
+6. [spring application](#spring-application)  
+7. [외부설정](#외부설정)  
   
 ***  
   
@@ -440,4 +441,31 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
         }
         ``` 
 
+***
+
+# 외부설정  
+
+* 애플리케이션 설정 값들을 애플리케이션의 안밖으로 설정할 수 있음.  
+* application.properties  
+    + 가장 중요한 설정 파일  
+    + 스프링부트가 애플리케이션을 구동할 때 자동으로 로딩하는 file 이름. convention.  
+    + key : value 형태로 저장. 애플리케이션에서 참조함.  
+    + 프로퍼티 우선순위  
+        1. 유저 홈 디렉토리에 있는 spring-boot-dev-tools.properties
+        2. 테스트에 있는 @TestPropertySource
+        3. @SpringBootTest 애노테이션의 properties 애트리뷰트
+        4. 커맨드 라인 아규먼트
+        5. SPRING_APPLICATION_JSON (환경 변수 또는 시스템 프로티) 에 들어있는 프로퍼티
+        6. ServletConfig 파라미터
+        7. ServletContext 파라미터
+        8. java:comp/env JNDI 애트리뷰트
+        9. System.getProperties() 자바 시스템 프로퍼티
+        10. OS 환경 변수
+        11. RandomValuePropertySource
+        12. JAR 밖에 있는 특정 프로파일용 application properties
+        13. JAR 안에 있는 특정 프로파일용 application properties
+        14. JAR 밖에 있는 application properties
+        15. JAR 안에 있는 application properties
+        16. @PropertySource
+        17. 기본 프로퍼티 (SpringApplication.setDefaultProperties)
 ***
