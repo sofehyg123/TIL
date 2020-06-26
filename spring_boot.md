@@ -575,7 +575,7 @@ SpEL 을 사용할 수 있지만, 위에 있는 @ConfigurationProperties가 지�
 * 로깅 퍼사드 VS 로거 : commons Logging은 여러 개의 로거들을 골라서 사용할 수 있다는 장점이 있으나 클래스패스와 관려 이슈가 있었음.  
                     SLF4j 는 클래스 로더에서 발생하는 이슈들은 해결되 수 있으나 exclusion의 의존성 설정이 조금 복잡함.  
                     spring5 에서 exclusion 하지 않아도 안전하 쓸 수 있도록 자체 내에서 스프링jcl 모듈을 만듬.  
-                    jcl 코드르 컴파이 시점에 SLF4j 혹은 Log4J2로 
+                    jcl 코드르 컴파이 시점에 SLF4j 혹은 Log4J2로 f
 Commons Logging, SLF4j  
 JUL, Log4J2, Logback  
       
