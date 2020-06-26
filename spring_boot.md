@@ -2,6 +2,8 @@
 
 * [출처:백기선님의 inflearn 강좌](https://www.inflearn.com/course/스프링부트/dashboard)  
 ---
+* 꺠닫기
+  + 환경설정이 오타가 나거나 잘못된 데이터를 맵핑하는 코드를 넣으면 맵핑값을 찾을 수 없게 되어서 오류가 뜬다.  
 # 목차  
   
 0. [자동설정 이해](자동설정-이해)
@@ -457,32 +459,32 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
     + 스프링부트가 애플리케이션을 구동할 때 자동으로 로딩하는 file 이름. convention. **이름을 똑바로 적어야 application.properties파일을 읽어들일 수 있음**  
     + key : value 형태로 저장. 애플리케이션에서 참조함.  
     + 프로퍼티 우선순위  
-        - 유저 홈 디렉토리에 있는 spring-boot-dev-tools.properties  
-        - 테스트에 있는 @TestPropertySource  
+        1.유저 홈 디렉토리에 있는 spring-boot-dev-tools.properties  
+        2.테스트에 있는 @TestPropertySource  
           - Test Properties 은 Environment 객체를 통해서 확인할 수 있음.  
           - Environment 는 springframework 의 import을 추가해야 함.  
           - environment.getPropert("hyeokki.name") 으로 properties 값을 가져올 수 있음.  
           - assertThat(environment.getProperty("hyeokki.name")).isEqualTo("hyeokki"); -> starter-test dependency 를 추가하면 사용할 수 있음. 
           - @TestPropertySource(properties = "hyeokki.name=yun2") 이 방법도 있음.  
           - @SpriongBootTest(properties = "hyeokki.name") 보다 @TestPropertySource(properties = "hyeokki.name=yun2")가 우선순위가 더 높다.  
-        - @SpringBootTest 애노테이션의 properties 애트리뷰트  
+        3.@SpringBootTest 애노테이션의 properties 애트리뷰트  
           - 3순위임  
           - @SpringBootTest(properties = "hyeokki.name=yun2") 로 참조.  
-        - 커맨드 라인 아규먼트  
+        4.커맨드 라인 아규먼트  
             - Packaging 하고 실행할 떄 .jar 뒤에 -- hyeokki.name=yun 을 추가 입력해주면 application.properties의 파일을 @Override해서 value값이 재설정됨.  
-        - SPRING_APPLICATION_JSON (환경 변수 또는 시스템 프로티) 에 들어있는 프로퍼티  
-        - ServletConfig 파라미터  
-        - ServletContext 파라미터  
-        - java:comp/env JNDI 애트리뷰트  
-        - System.getProperties() 자바 시스템 프로퍼티  
-        - OS 환경 변수  
-        - RandomValuePropertySource  
-        - JAR 밖에 있는 특정 프로파일용 application properties  
-        - JAR 안에 있는 특정 프로파일용 application properties  
-        - JAR 밖에 있는 application properties  
-        - JAR 안에 있는 application properties  
-        - @PropertySource  
-        - 기본 프로퍼티 (SpringApplication.setDefaultProperties)  
+        5.SPRING_APPLICATION_JSON (환경 변수 또는 시스템 프로퍼티) 에 들어있는 프로퍼티  
+        6.ServletConfig 파라미터  
+        7.ServletContext 파라미터  
+        8.java:comp/env JNDI 애트리뷰트  
+        9.System.getProperties() 자바 시스템 프로퍼티  
+        10.OS 환경 변수  
+        11.RandomValuePropertySource  
+        12.JAR 밖에 있는 특정 프로파일용 application properties  
+        13.JAR 안에 있는 특정 프로파일용 application properties  
+        14.JAR 밖에 있는 application properties  
+        15.JAR 안에 있는 application properties  
+        16.@PropertySource  
+        17.기본 프로퍼티 (SpringApplication.setDefaultProperties)  
     
     * main > application.properties vs test > application.properties  
         - 제일 먼저 main의 src와 resources 폴더를 클래스패스에 올리고 다음에는 test를 올리는데 이때 test의 application.properties에 1개라도 같은 값이 있으면 오버라이딩이 된다.  
@@ -537,6 +539,7 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
     + JSR-303 (@NotNull, ...)  
 * 메타 정보 생성
     + "spring-boot-configuration-prosessor" dependency Injection.  
+    + 프로젝트를 빌드할 때 META정보를 생성해주는 plugin.  
 + @Value  
 SpEL 을 사용할 수 있지만, 위에 있는 @ConfigurationProperties가 지원하는 기능은 전부 사용하지 못함.  
   
@@ -545,6 +548,37 @@ SpEL 을 사용할 수 있지만, 위에 있는 @ConfigurationProperties가 지�
   
 ## 프로파일  
   
+* SpringFramework에서 제공해주는 기능.  
+* 특정한 profile에서만 특정 bean 등록하고 싶을 때  
+* 애플리케이션 동작을 특정 profile에서 다르게 동작하고 싶을 때 사용.  
   
+* @Bean설정  
+    + Profile("") 값에 해당이 되면 @Configuration 을 통해 @Bean이 등록이 되고, 해당이 안되면 클래스를 읽지 않음.  
+    + 사용법  
+      - application.properties 에서 key 추가  
+        ex)spring.profiles.actice=prod  
+      - command line 의 arguments 값으로 profile.active 값을 주면 우선순위에 따라 application.properties 을 오버라이드 해서 값이 변경되어 값이 출력된다.  
+* profile과 관련된 properties 는 기본 application.properties 보다 우선순위가 더 높다.  
+    + application-prod.properties, application-test.properties >(우선순위)> application.properties  
++ spring.profiles.include 속성 :  추가적인 profile을 활성화.  
+  
+  
+***  
+  
+## logging  
+  
+* 주제
+  - 스프링부트 기본 로거 설정  
+  - 커스터마이징  
+---
+  
+* 로깅 퍼사드 VS 로거 : commons Logging은 여러 개의 로거들을 골라서 사용할 수 있다는 장점이 있으나 클래스패스와 관려 이슈가 있었음.  
+                    SLF4j 는 클래스 로더에서 발생하는 이슈들은 해결되 수 있으나 exclusion의 의존성 설정이 조금 복잡함.  
+                    spring5 에서 exclusion 하지 않아도 안전하 쓸 수 있도록 자체 내에서 스프링jcl 모듈을 만듬.  
+                    jcl 코드르 컴파이 시점에 SLF4j 혹은 Log4J2로 
+Commons Logging, SLF4j  
+JUL, Log4J2, Logback  
+      
+
   
   
