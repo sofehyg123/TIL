@@ -571,14 +571,36 @@ SpEL 을 사용할 수 있지만, 위에 있는 @ConfigurationProperties가 지�
   - 스프링부트 기본 로거 설정  
   - 커스터마이징  
 ---
-  
+
+### 스프링부트 기본 로거 설정  
 * 로깅 퍼사드 VS 로거 : commons Logging은 여러 개의 로거들을 골라서 사용할 수 있다는 장점이 있으나 클래스패스와 관려 이슈가 있었음.  
-                    SLF4j 는 클래스 로더에서 발생하는 이슈들은 해결되 수 있으나 exclusion의 의존성 설정이 조금 복잡함.  
-                    spring5 에서 exclusion 하지 않아도 안전하 쓸 수 있도록 자체 내에서 스프링jcl 모듈을 만듬.  
-                    jcl 코드르 컴파이 시점에 SLF4j 혹은 Log4J2로 f
-Commons Logging, SLF4j  
-JUL, Log4J2, Logback  
-      
+                    SLF4j는 클래스 로더에서 발생하는 이슈들은 해결되 수 있으나 exclusion의 의존성 설정이 조금 복잡함 => commons logging 기능 + 의존성에 근거해서 최종 선택을 함. 
+                    spring5 에서 exclusion 하지 않아도 안전하게 쓸 수 있도록 자체 내에서 스프링-JCL 모듈을 만듬.  
+                    이는 스프링-JCL 코드를 컴파일 시점에 SLF4j 혹은 Log4J2로 변경할 수 있는 기능을 가진 모듈임.  
+                    정리하자면 commons logging을 사용해도 SLF4j로 가게 되고 SLF4j는 Logback으로 기게 됨.  
+                    스프링 부트에서 만든 애플리케이션에서 무슨 로거를 사용해서 찍었는지 물어본다면 logback을 통해 로그를 찍힌 것이 정답임.  
+* Commons Logging, SLF4j  
+  - JUL, Log4J2, Logback  
+  
+* 스프링 5에 로거 관련 변경 사항  
+  https://docs.spring.io/spring/docs/5.0.0.RC3/spring-framework-reference/overview.html#overview-logging  
+  
+* Spring-JCL  
+  :Commons Logging -> SLF4j or Log4j2  
+   pom.xml에 exclusion 안해도 됨.  
+   
+* 스프링 부트 로깅(Run/debug configuration **OR** application.properties 설정파일)  
+  + 기본 포맷  
+  + --debug (일부 핵심 라이브러리만 디버깅 모드로)  
+  + --trace (전부 다 디버깅 모드로)  
+  + 컬러 출력: spring.output.ansi.enabled  
+  + 파일 출력: logging.file 또는 logging.path  
+  + 로그 레벨 조정: logging.level.패키지경로 = 로그 레벨  
+    - 다른 패키지 로그 레벨도 출력해볼 수 있다.(패키지 명만 바꾸면 됨)  
+
+### 커스터마이징  
+
+
 
   
   
