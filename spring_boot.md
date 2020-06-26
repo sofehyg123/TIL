@@ -444,7 +444,12 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
 ***
 
 # 외부설정  
-
+* 주요사항  
+  - application.properties의 key : value 형태  
+  - application.properties 의 위치(4곳)에 따라 properties의 우선순위  
+  - properties의 우선순위  
+  - main > resources > application.properties **VS** test > resources > application.properties @Override  
+  - property가 많은 경우 test > resources > test.properties 에서 작성하기 => @TestPropertySource(locations="classpath:/경로명")  
 * 애플리케이션 설정 값들을 애플리케이션의 안밖으로 설정할 수 있음.  
 * application.properties  
     + 가장 중요한 설정 파일  
@@ -456,8 +461,12 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
           - Test Properties 은 Environment 객체를 통해서 확인할 수 있음.  
           - Environment 는 springframework 의 import을 추가해야 함.  
           - environment.getPropert("hyeokki.name") 으로 properties 값을 가져올 수 있음.  
-          - assertThat(environment.getProperty("hyeokki.name")).isEqualTo("hyeokki"); -> starter-test dependency 를 추가하면 사용할 수 있음.  
+          - assertThat(environment.getProperty("hyeokki.name")).isEqualTo("hyeokki"); -> starter-test dependency 를 추가하면 사용할 수 있음. 
+          - @TestPropertySource(properties = "hyeokki.name=yun2") 이 방법도 있음.  
+          - @SpriongBootTest(properties = "hyeokki.name") 보다 @TestPropertySource(properties = "hyeokki.name=yun2")가 우선순위가 더 높다.  
         - @SpringBootTest 애노테이션의 properties 애트리뷰트  
+          - 3순위임  
+          - @SpringBootTest(properties = "hyeokki.name=yun2") 로 참조.  
         - 커맨드 라인 아규먼트  
             - Packaging 하고 실행할 떄 .jar 뒤에 -- hyeokki.name=yun 을 추가 입력해주면 application.properties의 파일을 @Override해서 value값이 재설정됨.  
         - SPRING_APPLICATION_JSON (환경 변수 또는 시스템 프로티) 에 들어있는 프로퍼티  
@@ -475,8 +484,18 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
         - 기본 프로퍼티 (SpringApplication.setDefaultProperties)  
     
     * main > application.properties vs test > application.properties  
-        - 제일 먼저 main의 src와 resources 폴더를 클래스패스에 올리고 다음에는 test를 올리는데 이때 test의 application.properties에 오버라이딩이 된다.
-        - 따라서 값을 참조할 때 오버라이딩된 application.properties 을 참조하게 되고 main의 property를 추가하면 해당 애플리케이션은 빌드가 되지만 test에는 빌드가 안됀다.
-        - 이유는 당연하지만 추가된 property 속성이 오버라이딩 된 application.properties 파일에는 없기 때문에 참조할 수 가 없는 것.
+        - 제일 먼저 main의 src와 resources 폴더를 클래스패스에 올리고 다음에는 test를 올리는데 이때 test의 application.properties에 1개라도 같은 값이 있으면 오버라이딩이 된다.  
+        - 따라서 값을 참조할 때 오버라이딩된 application.properties 을 참조하게 되고 main의 property를 추가하면 해당 애플리케이션은 빌드가 되지만 test에는 빌드가 안됀다.  
+        - 이유는 당연하지만 추가된 property 속성이 오버라이딩 된 application.properties 파일에는 없기 때문에 참조할 수 가 없는 것.  
+        
+    * properties 가 많을 때 file로 관리하기  
+        - test > resources > test.properties  
+        - 2순위이기 떄문에 application.properties 에서 동일한 key값이 존재하면 덮어씌어서 test.propoerties key값을 쓰게 된다.  
+    * application.properties 위치 4곳
+        1. application(root) > config 디렉토리 위치  
+        2. application(root) > 위치  
+        3. classpath:/config/  
+        4. classpath:/
+       
        
 ***
