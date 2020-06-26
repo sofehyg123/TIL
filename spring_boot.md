@@ -12,6 +12,7 @@
 5. [독립적으로 실행 가능한 JAR 파일](#독립적으로-실행-가능한-JAR-파일)  
 6. [spring application](#spring-application)  
 7. [외부설정](#외부설정)  
+8. [프로파일](#프로파일)  
   
 ***  
   
@@ -496,6 +497,54 @@ Jetty started on port(s) 51300 (http/1.1) with context path '/' //1
         2. application(root) > 위치  
         3. classpath:/config/  
         4. classpath:/
-       
-       
+        
+## 외부설정2
+---
+  
+* Configuration 클래스 생성
+    + 데이터(객체)를 Binding 받을 수 있게 getter/setter 생성.  
+      - 여러 properties 들을 묶어서 읽어올 수 있음.  
+    + @ConfigurationProperties("hyeokki") 처리, "타입-세이프 프로퍼티"  
+      - hyeokki 라는 key로 접근해서 getter 호출.  
+      - configuration 클래스임을 뜻하는 애노테이션 처리.  
+      - @Component를 통해서 "@Bean으로 등록해달라"는 의미의 애노테이션 처리.  
++ Application 실행 클래스에 달아둘 애노테이션  
+    + @EnableConfigurationProperties(HyeokkiProperties.class)  
+      - @ConfigurationProperties 클래스들을 읽어서 Bean으로 등록하고 애노테이션 처리를 하기 때문에 반드시 필요한 애노테이션.  
+      - 그렇지만, @SpringBootApplication 애노테이션이 존재하면 위 기능이 포함되므로 안적어주어도 된다.  
++ Runner 클래스  
+    + Configuration 객체 참조변수 선언  
+      - @Autowired 애노테이션을 통해 @Bean으로 등록  
+      - HyeokkiConfiguration hyeokkiConfiguration;  
+    + System.out.println(hyeokkiConfiguration.getName());  
+      - application.properties 에서 정의한 key값과 맵핑되어서 binding된 값을 가져옴.  
+  
+* 융통성 있는 바인딩
+    + context-path (케밥)  
+      - application.properties > hyeokki.full-name=hyeokki => '-' 허용  
+    + context_path (언드스코어)  
+      - application.properties > hyeokki.full_name=hyeokki => '_' 허용
+    + contextPath (캐멀)  
+    + CONTEXTPATH  
+* 프로퍼티 타입 컨버전
+    + application.properties 파일에 작성된 내용은 문자열이기 때문에 property값을 int 속성으로 주입받고자 하는 경우  
+      자동적으로 Integer 타입으로 컨버전하는 기능을 @ConfigurationProperties에서 지원해줍니다.  
+* @DurationUnit  
+    + 시간정보기능  
+    + 필요하다면 강의 내용 중 외부설정2 > 6:10 부터  
+* 프로퍼티 값 검증  
+    + @Validated  
+    + JSR-303 (@NotNull, ...)  
+* 메타 정보 생성
+    + "spring-boot-configuration-prosessor" dependency Injection.  
++ @Value  
+SpEL 을 사용할 수 있지만, 위에 있는 @ConfigurationProperties가 지원하는 기능은 전부 사용하지 못함.  
+  
+  
 ***
+  
+## 프로파일  
+  
+  
+  
+  
