@@ -635,8 +635,8 @@ Q. 역시 이번에도 의존성을 추가하거나 애노테이션을 사용하
   + 의존성 부터 확인.  
   + Test 클래스 작성.  
   + @Runwith(SpringRunner.class), @SpringbootTest => 가장 기본적인 테스트 코드 형태.  
-  + @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)[참고](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-boot-features.html#boot-features-testing)  
-보류  
+  + @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)-[참고](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-boot-features.html#boot-features-testing)  
+  + 
 ***
 ## 스프링 웹 MVC  
 
