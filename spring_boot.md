@@ -36,7 +36,7 @@
         - @EnableAutoConfiguration이 자동으로 등록하려는 Bean들은 External Library 의 spring-boot-auticonfigure:2.x.x.RELEASE > META-INF > spinrg.factories 안에 정의되어 있으므로  이 곳에다 configuration을 정의하면 Bean을 등록해줄 수 있게 @EnableAutoConfiguration이 스캔할 것임.  
         - 근데 factories에 EnableAutoConfiguration 키값을 적어야 동작할 듯?
         - 그래서 EnableAutoConfiguration이 동작할 때 이 키값에 해당되는 configuration을 구동시키는 거지.
-        - 근데 전부 다 구동되는 것은 아니고 조건에 맞게 구동이 된다는 것.
+        - 근데 전부 다 구동되는 것은 아니고 조건에 맞게 구동이 된다는 것. =conditional  
   
 # 자동설정 만들어 보기
   
