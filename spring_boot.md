@@ -19,6 +19,46 @@
 * [스프링 웹 MVC](#스프링-웹-MVC)  
     + [소개](#소개)  
 ***  
+>@RestController  
+1. @Controller는 View를 리턴하는 메서드를 포함하지만, @RestController는 문자열(JSON 등)과 객체를 리턴하는 메서드들이 있다.  
+2. 활용  
+  + @RestController로 문자열 전송하기  
+  ```  
+  @RestController
+  @RequestMapping("/test/*")
+  public class SampleController {
+      @RequestMapping("/hello")
+      public String hello(){
+          return "hello"; //문자열 전송
+      }
+  }
+  ```  
+  + @RestController로 [커맨드](#커맨드) 객체 전송하기  
+  ```  
+  @RestController
+  @RequestMapping("/test/*")
+  public class SampleController {
+  
+      @Autowired
+      public UserVo userVo;
+      
+      @RequestMapping("/hello")
+      public UserVo userVo(){
+          userVo.setAddress("아아아아");
+          userVo.setAge(25);
+          userVo.setName("아아아아");
+          return userVo;
+      }
+  }
+  ```  
+  + @RestController로 컬렉션 객체 전송하기  
+  + @RestController로 map 전송하기  
+  
+  
+[참고](https://webcoding.tistory.com/entry/Spring-REST-API-사용하기)  
+
+
+***  
   
 # 자동설정 이해  
   + 출처  
