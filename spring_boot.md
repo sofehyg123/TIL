@@ -19,43 +19,48 @@
 * [스프링 웹 MVC](#스프링-웹-MVC)  
     + [소개](#소개)  
 ***  
->@RestController  
-1. @Controller는 View를 리턴하는 메서드를 포함하지만, @RestController는 문자열(JSON 등)과 객체를 리턴하는 메서드들이 있다.  
-2. 활용  
-  + @RestController로 문자열 전송하기  
-  ```  
-  @RestController
-  @RequestMapping("/test/*")
-  public class SampleController {
-      @RequestMapping("/hello")
-      public String hello(){
-          return "hello"; //문자열 전송
-      }
-  }
-  ```  
-  + @RestController로 [커맨드](#커맨드) 객체 전송하기  
-  ```  
-  @RestController
-  @RequestMapping("/test/*")
-  public class SampleController {
+### 모르는 거 알기  
   
-      @Autowired
-      public UserVo userVo;
-      
-      @RequestMapping("/hello")
-      public UserVo userVo(){
-          userVo.setAddress("아아아아");
-          userVo.setAge(25);
-          userVo.setName("아아아아");
-          return userVo;
-      }
+>#### @RestController  
+* @Controller는 View를 리턴하는 메서드를 포함하지만, @RestController는 문자열(JSON 등)과 객체를 리턴하는 메서드들이 있다.  
+* @RestController로 문자열 전송하기  
+```  
+@RestController
+@RequestMapping("/test/*")
+public class SampleController {
+  @RequestMapping("/hello")
+  public String hello(){
+      return "hello"; //문자열 전송
   }
-  ```  
-  + @RestController로 컬렉션 객체 전송하기  
-  + @RestController로 map 전송하기  
+}
+```  
+* @RestController로 [커맨드](#커맨드) 객체 전송하기  
+```  
+@RestController
+@RequestMapping("/test/*")
+public class SampleController {
+
+  @Autowired
+  public UserVo userVo;
+
+  @RequestMapping("/hello")
+  public UserVo userVo(){
+      userVo.setAddress("아아아아");
+      userVo.setAge(25);
+      userVo.setName("아아아아");
+      return userVo;
+  }
+}
+```  
+* @RestController로 컬렉션 객체 전송하기  
+* @RestController로 map 전송하기  
   
   
 [참고](https://webcoding.tistory.com/entry/Spring-REST-API-사용하기)  
+
+>#### GetMapping vs RequestMapping  
+[출처](https://0penster.tistory.com/24)  
+* spring 4.3 이후부터 @RequestMapping(value="/hello", method={RequestMethod.GET} 를 간단하게 @GetMapping로 사용할 수 있게 간편해졌다.  
 
 
 ***  
@@ -670,15 +675,138 @@ SpEL 을 사용할 수 있지만, 위에 있는 @ConfigurationProperties가 지�
 Q. 애플리케이션 테스트가 중요하다고 하는데 스프링부트에서 제공해주는 편리한 테스트 기능인가?  
 Q. 역시 이번에도 의존성을 추가하거나 애노테이션을 사용하게 되겠지? 아니면 편리하게 사용할 수 있도로 관려 설정파일을 다루거나.  
 자, 이제 공부 시작!  
-  
-* 테스트 시작
+
+[공부 후-처음]  
+A. 하나도 모르겠다. 아니, 사실 스프링 부트에서 이런 테스트를 왜 하는가. 어떤상황일때 테스트를 하는가를 모르겠다.  
+A. 백기선님은 이런 테스트 애노테이션이 있어서 편리하다는 듯 말씀하시는데, 나는 공감을 못하겠다.  
+A. 공감을 못하는게 당연하다. 현재 나는 애플리케이션을 개발해본 적 없고 테스트가 왜 중요한지 모르고, 테스트의 나쁜 코드를 짜본적도, 이로인해 귀찮음을 느껴본 적이 없다.  
+A. 테스트는 중요하다고 말하니 알겠다. 현재로써 내가 해야 할 일을 정하자면  
+A. 이해될 때까지 영상반복 + 구글검색 을 통해서 테스트 기능을 외운다. 그리고 개발 시 사용하며, 왜 사용해야 하는 지 알아본다.  
+A. 다시 공부 시작!  
+
+* 테스트 시작  
   + 의존성 부터 확인.  
-  + Test 클래스 작성.  
+  + 테스트 클래스 작성.(테스트 환경이 Mock일 때, MockMVC 를 활용한 테스트 작성.) 
   + @Runwith(SpringRunner.class), @SpringbootTest => 가장 기본적인 테스트 코드 형태.  
   + @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)-[참고](https://docs.spring.io/spring-boot/docs/2.3.1.RELEASE/reference/html/spring-boot-features.html#boot-features-testing)  
-  + 
+  + MockMVC([참고](https://shinsunyoung.tistory.com/52))
+    - 실제 객체와 비슷하지만 테스트에 필요한 기능만 가지는 가짜 객체를 만들어서  
+      애플리케이션 서버에 배포하지 않고도 스프링 MVC 동작을 재현할 수 있는 클래스를 의미  
+  ```  
+  @RunWith(SpringRunner.class)
+  @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+  @AutoConfigureMockMvc
+  public class SampleControllerTest {
+
+      @Autowired
+      MockMvc mockMvc;
+
+      @Test
+      public void hello() throws Exception{
+          mockMvc.perform(MockMvcRequestBuilders.get("/hello"))
+                  .andExpect(status().isOk())
+                  .andExpect(content().string("hello hyeokki"))
+                  .andDo(print());
+
+      }
+
+  }
+  ```  
+* 테스트 작성(랜덤 포트를 사용 - @Service 단위로 테스트하기.)  
+  + 내장 톰켓에 요청 보내서 테스트용 서블릿컨테이너가 뜬다(?).  
+  + 코드  
+  ```  
+  @RunWith(SpringRunner.class)
+  @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+  @AutoConfigureMockMvc
+  public class SampleControllerTest {
+
+      @Autowired
+      TestRestTemplate testRestTemplate;
+
+      @Test
+      public void hello() throws Exception{
+          String result = testRestTemplate.getForObject("/hello", String.class);//URL, 내가 원하는 바디 타입.
+          assertThat(result).isEqualTo("hello hyeokki");
+      }
+  }
+  ```  
+* 테스트 작성(@Controller 단위로 테스트하기-@Service보다 범위가 작음.)  
+  + SampleController 에서 서비스하는 @Bean을 Mocking해서 @MockBean으로 교체, 테스트하기 편해짐.  
+  ```  
+  @RunWith(SpringRunner.class)
+  @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+  @AutoConfigureMockMvc
+  public class SampleControllerTest {
+
+      @Autowired
+      TestRestTemplate testRestTemplate;
+
+      @MockBean
+      SampleService mockSampleService; // applicationContext 안에 있는 실제 bean을 MockBean으로 교체
+
+      @Test
+      public void hello() throws Exception{
+          when(mockSampleService.getName()).thenReturn("yun");
+          String result = testRestTemplate.getForObject("/hello", String.class);//URL, 내가 원하는 바디 타입.
+          assertThat(result).isEqualTo("hello yun");
+      }
+
+  }
+  ```  
+* WebTestClien
+  ```
+  @RunWith(SpringRunner.class)
+  @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+  @AutoConfigureMockMvc
+  public class SampleControllerTest {
+
+      @Autowired
+      WebTestClient webTestClient;
+
+      @MockBean
+      SampleService mockSampleService; // applicationContext 안에 있는 실제 bean을 MockBean으로 교체
+
+      @Test
+      public void hello() throws Exception{
+          when(mockSampleService.getName()).thenReturn("yun");
+
+          webTestClient.get().uri("/hello").exchange().expectStatus().isOk()
+                      .expectStatus().isOk()
+                      .expectBody(String.class).isEqualTo("hello yun");
+      }
+
+  }
+  ```  
+  
+* 테스트 유틸  
+  + OutputCapture  
+    : 로그를 비롯해서 콘솔에 찍히는 모든 것을 다 Capture함.  
+  ```  
+  @RestController
+  public class SampleController {
+
+      Logger logger = LoggerFactory.getLogger(SampleController.class);
+
+      @Autowired
+      private SampleService sampleService;
+
+      @GetMapping("/hello")
+      public String hello(){
+          logger.info("holoman");
+          System.out.println("skip");
+          return "hello "+sampleService.getName();
+      }
+  }
+
+  ```  
+  + TestPropertyValues  
+  + TestRestTemplate  
+  + ConfigFileApplicationContextInitializer  
 ***
-## 스프링 웹 MVC  
+
+## 
+## 스프링 웹 MVC ff  
 
 ### 소개  
   + 
