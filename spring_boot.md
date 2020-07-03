@@ -787,7 +787,7 @@ A. 다시 공부 시작!
   public class SampleController {
 
       Logger logger = LoggerFactory.getLogger(SampleController.class);
-
+mv
       @Autowired
       private SampleService sampleService;
 
@@ -803,13 +803,23 @@ A. 다시 공부 시작!
   + TestPropertyValues  
   + TestRestTemplate  
   + ConfigFileApplicationContextInitializer  
-***
-
-## 
-## 스프링 웹 MVC ff  
-
+***  
+  
+  
+## 스프링 웹 MVC  
+  
 ### 소개  
-  + 
+* @WebMvcTest(UserController.class)  
+  WebMvcTest를 만들 때 주로 사용하는 Mockmvc라는 객체를 주입.  
+  이 객체는 WebMvcTest라는 애노테이션을 사용하면 자동으로 @bean으로 만들어주기 때문에 우리가 그냥 @Bean에 있는 걸 꺼내다가 바로 사용할 수 있다.  
+  ```  
+    @RunWith(SpringRunner.class)
+    @WebMvcTest(UserController.class)//슬라이싱 테스트(웹계층)
+    public class UserControllerTest {
+        @Autowired
+
+    }
+  ```  
 
 
 
