@@ -18,6 +18,7 @@
 * [테스트](#테스트)  
 * [스프링 웹 MVC](#스프링-웹-MVC)  
     + [소개](#소개)  
+    + [HttpMessageConverters](#HttpMessageConverters)  
 ***  
 ### 모르는 거 알기  
   
@@ -787,7 +788,7 @@ A. 다시 공부 시작!
   public class SampleController {
 
       Logger logger = LoggerFactory.getLogger(SampleController.class);
-mv
+
       @Autowired
       private SampleService sampleService;
 
@@ -820,6 +821,24 @@ mv
 
     }
   ```  
+
+### HttpMessageConverters
+* [Reference](https://docs.spring.io/spring/docs/5.0.7.RELEASE/spring-framework-reference/web.html#mvc-config-message-converters)  
+* 스프링 프레임워크가 제공하는 인터페이스이고 스프링MVC의 일부분.  
+* HTTP 요청 본문을 객체로 변경하거나, 객체를 HTTP 응답 본문으로 변경할 때 사용.
+  스프링MVC에서 RequestBody와 ResponseBody 애노테이션과 같이 사용됨.  
+  어떤 요청을 받았는지, 어떤 응답을 보내야하는지에 따라 사용하는 HttpMessageConverters가 달라짐.  
+  가령, 요청헤더타입:JSON, 본문:JSON : JSON메세지컨버터가 사용되서 JSON메세지르 user라는 객체로 컨버터 해준다.  
+  ```  
+    @PostMapping("/user")
+    public @ResponseBody User create(@RequestBody User user){ // 클래스에서 알아서 conversion 해준다.
+        return null;
+    }
+    //@RestController 애노테이션이 붙어 있으면 @ResponseBody는 생략이 가능하다. 
+  ```  
+* {“username”:”keesun”, “password”:”123”} <-> User
+* @ReuqestBody
+* @ResponseBody
 
 
 
